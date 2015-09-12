@@ -1,19 +1,37 @@
 # Author: triffe
 ###############################################################################
+# compiles long-format all-cause complete lifetables from HMD.
+# should only run once at beginning and again once at end 
+# (for final data version in paper, to be saved with metadata)
+# for Tim, this will choke
 
+hm<- local(get(load("/home/tim/Desktop/Ken-decompos/mxcod.Rdata")))
+dimnames(hm)
 
-States <- local(get(load("/hdir/0/triffe/workspace/other/Decomposition/StateDivergence/Data/MXClong.Rdata")))
-LT     <- local(get(load("/hdir/0/triffe/workspace/other/Decomposition/StateDivergence/Data/MilaStatesSingleAge.Rdata")))
-head(LT)
+if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm", "tim-ThinkPad-L440")){
+	# if I'm on the laptop
+	setwd("/home/tim/git/BPLE/BPLE")
+} else {
+	# in that case I'm on Berkeley system, and other people in the dept can run this too
+	setwd(paste0("/data/commons/",system("whoami",intern=TRUE),"/git/BPLE/BPLE"))
+}
+getwd()
+length(unique())
+States <- local(get(load("Data/MXClong.Rdata")))
+LT     <- local(get(load("Data/MilaStatesSingleAge.Rdata")))
+
 fRLE <- tapply(LT$ex[LT$Age == 0 & LT$Sex == "f"], LT$Year[LT$Age == 0& LT$Sex == "f"], max)
 mRLE <- tapply(LT$ex[LT$Age == 0 & LT$Sex == "m"], LT$Year[LT$Age == 0& LT$Sex == "m"], max)
 
-plot(unique(LT$Year), RLE, type = 'l', main = "US Record e(0)")
+plot(unique(LT$Year), fRLE, type = 'l', main = "US Record e(0)",ylim=c(65,85))
+lines(unique(LT$Year), mRLE)
 States$Cause <- as.character(States$Cause)
+unique(States$Cause)
+
 
 library(data.table)
 States <- data.table(States)
-Mins <- States[,min(mxc),by=list(Year, Sex, Age, Cause)]
+Mins   <- States[,min(mxc),by=list(Year, Sex, Age, Cause)]
 Agg <- Mins[,sum(V1),by=list(Year, Sex, Age)]
 
 library(reshape2)
