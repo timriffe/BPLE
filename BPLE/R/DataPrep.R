@@ -150,7 +150,9 @@ LTC[,prop2 := makeprop(mxcs), by = list(Year, State, Sex, Age)]
 LTC$mxcs2 <- LTC$prop2 * LTC$mxs
 
 # take look at example for small state...
-plot(with(LTC, mxcs2[Sex == "f" & Year == 1959 & Cause == "Cardio."]), log = 'y', type = 'l')
+#plot(with(LTC, mxcs2[Sex == "f" & Year == 1959 & Cause == "Breast"& State == "AK"]), log = 'y', type = 'l')
+#points(with(LTC, mxcs[Sex == "f" & Year == 1959 & Cause == "Breast"& State == "AK"]))
+#points(with(LTC, mxc5[Sex == "f" & Year == 1959 & Cause == "Breast"& State == "AK"]),pch=3)
 
 # so depending on whether the result is smooth or not, may be due for a second round of smoothing
 # within cause. Or maybe we accept this? Probably enough juice for now.
