@@ -31,7 +31,7 @@ States <- data.table(States)
 Mins   <- States[,min(mxcs2),by=list(Year, Sex, Age, Cause)]
 Mins2  <- States[,min(mxc5),by=list(Year, Sex, Age, Cause)]
 
-Agg <- Mins[,sum(V1),by=list(Year, Sex, Age)]
+Agg  <- Mins[,sum(V1),by=list(Year, Sex, Age)]
 Agg2 <- Mins2[,sum(V1),by=list(Year, Sex, Age)]
 
 library(reshape2)
