@@ -18,7 +18,11 @@ if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm", "tim-ThinkPad-L440")){
 getwd()
 
 States <- local(get(load("Data/LTC1.Rdata")))
-LT     <- local(get(load("Data/MilaStatesSingleAge.Rdata")))
+#LT     <- local(get(load("Data/MilaStatesSingleAge.Rdata")))
+
+
+fRLE <- tapply(LT$ex[LT$Age == 0 & LT$Sex == "f"], LT$Year[LT$Age == 0& LT$Sex == "f"], max)
+mRLE <- tapply(LT$ex[LT$Age == 0 & LT$Sex == "m"], LT$Year[LT$Age == 0& LT$Sex == "m"], max)
 
 fRLE <- tapply(LT$ex[LT$Age == 0 & LT$Sex == "f"], LT$Year[LT$Age == 0& LT$Sex == "f"], max)
 mRLE <- tapply(LT$ex[LT$Age == 0 & LT$Sex == "m"], LT$Year[LT$Age == 0& LT$Sex == "m"], max)

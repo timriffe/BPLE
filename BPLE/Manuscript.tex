@@ -1,1 +1,143 @@
-% an empty .tex file. Eventually may transwer .odt in here
+% an empty .tex file. Eventually may transfer .odt in here
+%%This is a very basic article template.
+%%There is just one section and two subsections.
+%\documentclass[12pt,oneside,a4paper,doublespacing]{article} % for submission
+\documentclass[11pt,oneside,a4paper]{article} % for sharing
+
+\usepackage{appendix}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{placeins}
+\usepackage{graphicx}
+\usepackage{subcaption}
+%\usepackage{subfig}
+\usepackage{longtable}
+\usepackage{setspace}
+%\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor,colortbl}
+\usepackage{chngpage}
+%\usepackage[active,tightpage]{preview}
+\usepackage{natbib}
+\bibpunct{(}{)}{,}{a}{}{;} 
+\usepackage{url}
+\usepackage{nth}
+\usepackage{authblk}
+\usepackage[most]{tcolorbox}
+%\usepackage{hyperref}
+%\usepackage{color}
+%\usepackage{fontspec}
+%\usepackage{pdfsync}
+\usepackage[normalem]{ulem}
+\usepackage{amsfonts}
+\renewcommand{\listtablename}{List of Appendix Tables}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+% working on this need to concatenate file name based on sex and variable name
+%\newcommand\Cell[1]{{\raisebox{-0.05in}{\includegraphics[height=.2in,width=.2in]{Figures/ColorCodes/\expandafter#1}}}}  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% setting color to letters affects spacing. Here's a hack I found here:
+% http://tex.stackexchange.com/questions/212736/change-letter-colour-without-losing-letter-spacing
+%\DeclareRobustCommand{\spacedallcaps}[1]{\MakeUppercase{\textsc{#1}}} % all
+% caps with better spacing
+
+%\colorlet{RED}{red}
+%\colorlet{BLUE}{b}
+\colorlet{rd}{red}
+\colorlet{bl}{blue}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\ackn[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+\newcommand\vt[1]{\textcolor{rd}{#1}}
+\newcommand\eg[1]{\textcolor{bl}{#1}}
+
+\newcommand\tg[1]{\includegraphics[scale=.5]{Figures/triadtable/triad#1.pdf}}
+\newcommand\tgh[1]{\raisebox{-.25\height}{\includegraphics[scale=.3]{Figures/triadtable/triad#1.pdf}}}
+
+\defcitealias{HMD}{HMD}
+
+% junk for longtable caption
+\AtBeginEnvironment{longtable}{\linespread{1}\selectfont}
+\setlength{\LTcapwidth}{\linewidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{A best practices composite lifetable for US states}
+
+\author[1]{Tim Riffe\thanks{triffe@demog.berkeley.edu}}
+\author[2,3]{Adrien Remund}
+\author[2,3]{Magali Barbieri}
+\author[3]{Celeste Winant}
+\affil[1]{Max Planck Institute for Demographic Research}
+\affil[2]{universit{\'e} de Gen{\`e}ve}
+\affil[2]{Institut National d'{\'e}tudes D{\'e}mgraphiques}
+\affil[3]{Department of Demography, University of California, Berkeley}
+
+%\author{[Authors]}
+
+\maketitle
+
+\begin{abstract}
+We calculate a preliminary series of best-possible lifetables for the United
+States from 1959-2004, defined as the age-specific aggregate of the lowest
+observed age-cause specific death rates among the 50
+states and the District of Columbia for each year. This synthetic best practices lifetable shows a gradual
+increasing trend over the period, on average 1.9 and 2.2 years higher
+than the highest state life expectancy in each year for males and females,
+respectively. We argue that the US states best practices lifetable is a useful
+guage of mortality.
+\ackn{The work reported in this manuscript was supported in part by the U.S.
+National Institute On Aging of the National Institutes of Health under award
+numbers R01-AG011552 and R01-AG040245. The content is solely the responsibility of the authors and does not necessarily represent the official views of the funding agencies.}
+\end{abstract}
+
+
+\section*{Introduction}
+
+The question of limits to life expectancy is fundamental to demography, but it
+is also practical when projecting mortality. Mortality reductions in past
+decades have been steady in many populations, and at times linear, which tends
+to guide projections into predicting the same sort of progress far into the
+future. Most past attempts to place limits on such projections were shown to be
+overly conservative within a short period of years \citep{oeppen2002broken}.
+However, many simple mortality projections will send life expectancy scenarios
+to very high levels that for a given population may seem unimaginable. In some
+cases, one seeks an external population that has already achieved a life
+expectancy as high as that produced by a model, and this gives some assurance
+that the projection is possible. Japan assumes this role in many cases today. In
+2012 life expectancy for Japanese females was 86, while for US females it was 81
+\citep{HMD}. If a US projection turns out to reach 86 we at least know that this
+is indeed possible.
+
+The desire for such external references explains part of the interest in the
+historical development of world record life expectancy \citep{oeppen2002broken}.
+The maximum life expectancy from a set of populations shows what others may one
+day achieve due to diffusion in practices, technology, and wellbeing
+\citep{vallin2010esperance}.
+The vanguard life expectancy therefore provides a benchmark. The vanguard life expectancy is calculated based on mortality rates undifferentiated
+by cause, which may not provide an omnibus signal of what may eventually develop. While the force of mortality governs the lifetable, there is a substantive rationale to conceive of this force as a composite of cause-specific forces of mortality. \citet{vallin2008minimum} differentiate trends in life expectancy by causes of death, in terms of an epidemiological transition that unfolds in progressive stages with respect to particular technologies and risk factors in recent history. The level and timing of cause-specific responses to particular technological or well-being improvements at times vary.
+
+The lowest all-cause force of mortality is not necessarily composed of the
+lowest cause-specific forces of mortality, which means that the vanguard life
+expectancy does not reflect the best mortality possible given the current state
+of conditions. Alternatively, one could create cause-specific vanguard
+benchmarks, or more synthetically, combine the lowest mortality observed by age
+and cause into a hypothetical minimum mortality schedule. Such a hybrid
+lifetable-- hybrid with respect to reference population-- was already suggested
+by \citet{wunsch1975minimum} and \citet{vallin2008minimum}. These authors
+investigated trends in national-level. We refer to such a hybrid minimum
+lifetable as a best practices lifetable. 
+
+National populations are heterogeneous with respect to many factors that affect cause-spectific mortality rates. This does not make such comparisons futile, but it may make perfect convergence unimaginable even in the very long run. A national population's best reference may be calculated from within its own territorial subpopulations. This practice limits the sources of unaccounted for heterogeneity in international comparisons. However, subnational territorial units dto are not necessarily statistically reliable for this sort of exercise due to stochastic fluctuations in small populations, and varying degrees of data quality. The United States has a large population, with 50 states plus the District of Columbia that are also large enough to reduce stochasticity to male cause-specific mortality usable. Further the United States has a homogeneous death registration system with  standardized cause coding classification and practice. These conveniences with respect to the data source avoid many of the pitfalls of international comparisons of cause of death data. We therefore compute the US best practice lifetable based on 51 territorial subpopulations and 12 causes of death for the period 1959 to 2004 (or 2013 if RDC cooperates) 
+
+\end{document}
+

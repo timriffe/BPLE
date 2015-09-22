@@ -23,37 +23,37 @@ Year <- .SD$Year
 mx <- .SD$mxs
 Sex <- .SD$Sex
 
-gete0 <- function(CHUNK){
-	mx <- acast(CHUNK, Age~Year, value.var = "mxs")
-	data.frame(State = unique(CHUNK$State),
-			   Year = sort(unique(CHUNK$Year)),
-			   Sex = unique(CHUNK$Sex),
-			   e0 = LTuniform(mx,sex=unique(CHUNK$Sex))$e0,
-			   e0orig = CHUNK$ex[CHUNK$Age ==0],
-			   stringsAsFactors = FALSE)
-}
-gete02 <- function(.SD){
-	mx <- acast(.SD, Age~Year, value.var = "mxs")
-	c(LTuniform(mx,sex=unique(.SD$Sex))$ex)
-}
-
-# for some reason couldn't do this with
-# normal data.table. tried too much, so I gave up
-LT       <- LTC[LTC$Cause == "Cardio.",]
-LT       <-as.data.frame(LT)
-LTL      <- split(LT, list(LT$State,LT$Sex))
-e0states <- do.call(rbind, lapply(LTL, gete0))
-head(e0states)
-e0ms <- acast(e0states[e0states$Sex == "m", ],State~Year,value.var = "e0")
-e0m  <- acast(e0states[e0states$Sex == "m", ],State~Year,value.var = "e0orig")
-e0fs <- acast(e0states[e0states$Sex == "f", ],State~Year,value.var = "e0")
-e0f  <- acast(e0states[e0states$Sex == "f", ],State~Year,value.var = "e0orig")
-
-matplot(1959:2004, t(e0m), type = 'l', lty = 2, lwd=2, col = "#00000090")
-matplot(1959:2004, t(e0ms), type = 'l', lty =1, col = "#FF000050", add=TRUE)
-
-matplot(1959:2004, t(e0f), type = 'l', lty = 2, lwd=2, col = "#00000090")
-matplot(1959:2004, t(e0fs), type = 'l', lty =1, col = "#FF000050", add=TRUE)
+#gete0 <- function(CHUNK){
+#	mx <- acast(CHUNK, Age~Year, value.var = "mxs")
+#	data.frame(State = unique(CHUNK$State),
+#			   Year = sort(unique(CHUNK$Year)),
+#			   Sex = unique(CHUNK$Sex),
+#			   e0 = LTuniform(mx,sex=unique(CHUNK$Sex))$e0,
+#			   e0orig = CHUNK$ex[CHUNK$Age ==0],
+#			   stringsAsFactors = FALSE)
+#}
+#gete02 <- function(.SD){
+#	mx <- acast(.SD, Age~Year, value.var = "mxs")
+#	c(LTuniform(mx,sex=unique(.SD$Sex))$ex)
+#}
+#
+## for some reason couldn't do this with
+## normal data.table. tried too much, so I gave up
+#LT       <- LTC[LTC$Cause == "Cardio.",]
+#LT       <-as.data.frame(LT)
+#LTL      <- split(LT, list(LT$State,LT$Sex))
+#e0states <- do.call(rbind, lapply(LTL, gete0))
+#head(e0states)
+#e0ms <- acast(e0states[e0states$Sex == "m", ],State~Year,value.var = "e0")
+#e0m  <- acast(e0states[e0states$Sex == "m", ],State~Year,value.var = "e0orig")
+#e0fs <- acast(e0states[e0states$Sex == "f", ],State~Year,value.var = "e0")
+#e0f  <- acast(e0states[e0states$Sex == "f", ],State~Year,value.var = "e0orig")
+#
+#matplot(1959:2004, t(e0m), type = 'l', lty = 2, lwd=2, col = "#00000090")
+#matplot(1959:2004, t(e0ms), type = 'l', lty =1, col = "#FF000050", add=TRUE)
+#
+#matplot(1959:2004, t(e0f), type = 'l', lty = 2, lwd=2, col = "#00000090")
+#matplot(1959:2004, t(e0fs), type = 'l', lty =1, col = "#FF000050", add=TRUE)
 
 # decide to decompose smooth vs BP smoothed. Remove stochasticity from results.
 # in next iteration find out how to be smooth with respect to age, but a bit 

@@ -31,7 +31,6 @@ FSCY <- FSCY[, list(All_other=mean(All_other),
 				   Stomach=mean(Stomach),
 				   Uterus=mean(Uterus)), 
 		by=list(State, Decade)]
-Causesf <- colnames(FSCY)[-c(1:2)]
 MSCY <- MSCY[, list(All_other=mean(All_other), 
 				Breast=mean(Breast),
 				Cardio=mean(Cardio),
@@ -43,10 +42,25 @@ MSCY <- MSCY[, list(All_other=mean(All_other),
 				Prostate=mean(Prostate),
 				Stomach=mean(Stomach)),
 				by=list(State, Decade)]
-Causesm <- colnames(MSCY)[-c(1:2)]
+
 
 MSCY   <- as.data.frame(MSCY)
 FSCY   <- as.data.frame(FSCY)
+
+MSCY$Lung          <- MSCY$Lung + MSCY$Other_smoking
+FSCY$Lung          <- FSCY$Lung + FSCY$Other_smoking
+MSCY$Other_smoking <- NULL
+FSCY$Other_smoking <- NULL
+
+FSCY$Cancer 	<- FSCY$Breast + FSCY$Other_MN + FSCY$Stomach + FSCY$Uterus
+FSCY$Breast 	<- FSCY$Other_MN <- FSCY$Stomach <- FSCY$Uterus <- NULL
+FSCY$Cerebrov 	<- FSCY$Cerebrov + FSCY$Other_CVDs
+FSCY$Other_CVDs <- NULL
+
+MSCY$Cancer   	<- MSCY$Other_MN + MSCY$Prostate + MSCY$Stomach + MSCY$Breast
+MSCY$Other_MN 	<- MSCY$Prostate <- MSCY$Stomach <- MSCY$Breast <- NULL
+MSCY$Cerebrov 	<- MSCY$Cerebrov + MSCY$Other_CVDs
+MSCY$Other_CVDs <- NULL
 
 # for purposes of plotting, top off upper contrib
 MSCY[,-c(1,2)][MSCY[,-c(1,2)] > 2] <- 2
@@ -70,6 +84,9 @@ F1980s$State <- F1980s$Decade <- NULL
 F1990s$State <- F1990s$Decade <- NULL
 F2000s$State <- F2000s$Decade <- NULL
 
+#colSums(MSCY[,-c(1,2)])
+#colSums(FSCY[,-c(1,2)])
+
 M1960s <- MSCY[MSCY$Decade == 1960, ]
 M1970s <- MSCY[MSCY$Decade == 1970, ]
 M1980s <- MSCY[MSCY$Decade == 1980, ]
@@ -89,46 +106,69 @@ M1990s$State <- M1990s$Decade <- NULL
 M2000s$State <- M2000s$Decade <- NULL
 
 
-breaks <- seq(0,2,by=.1)
+Causesf <- colnames(FSCY)[-c(1:2)]
+Causesm <- colnames(MSCY)[-c(1:2)]
 
-xpos <- seq(1,6,length=5)
-ypos <- 1:10
+breaks  <- seq(0, 2, by = .1)
+
+xpos    <- seq(1, 6, length = 5)
+ypos    <- 1:5
 
 getcontr <- function(X,i){
 	contr <- X[,i]
 	names(contr) <- rownames(X)
 	contr
 }
+ramp <- colorRampPalette(RColorBrewer::brewer.pal(9,"OrRd"),space="Lab")
+##############################
+# Females
+#graphics.off()
+#dev.new(height=6,width=6)
+pdf("Figures/StatesDecadesF.pdf",height=6,width=8)
+par(mai = c(.1,.6,.1,1.2), xaxs="i",yaxs="i", xpd=TRUE)
+plot(NULL, type = 'n', xlim = c(0,6.5),ylim = range(ypos)+c(-1,1), axes = FALSE, xlab = "",ylab = "",asp=1)
 
-par(mai = c(.1,.7,.4,.1), xaxs="i",yaxs="i", xpd=TRUE)
-plot(NULL, type = 'n', xlim = c(0,6.5),ylim = c(0,11), axes = FALSE, xlab = "",ylab = "",asp=1)
-
-for (i in 1:10){
+for (i in 1:5){
 	#rect(xpos[1]-.52,i-.52,xpos[1]+.52,i+.25,col=gray(.95),border=NA)
-	StateHeat(getcontr(F1960s,i),x=xpos[1],y=i,breaks=breaks, labels = FALSE, border = NA)
-	StateHeat(getcontr(F1970s,i),x=xpos[2],y=i,breaks=breaks, labels = FALSE, border = NA)
-	StateHeat(getcontr(F1980s,i),x=xpos[3],y=i,breaks=breaks, labels = FALSE, border = NA)
-	StateHeat(getcontr(F1990s,i),x=xpos[4],y=i,breaks=breaks, labels = FALSE, border = NA)
-	StateHeat(getcontr(F2000s,i),x=xpos[5],y=i,breaks=breaks, labels = FALSE, border = NA)
+	StateHeat(getcontr(F1960s,i),x=xpos[1],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
+	StateHeat(getcontr(F1970s,i),x=xpos[2],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
+	StateHeat(getcontr(F1980s,i),x=xpos[3],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
+	StateHeat(getcontr(F1990s,i),x=xpos[4],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
+	StateHeat(getcontr(F2000s,i),x=xpos[5],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
 }
-
-text(.2,ypos-.4,Causesf,pos=2,xpd=TRUE)
+causelabf <- gsub(pattern="_",replacement = " ",Causesf)
+text(.2,ypos-.4,causelabf,pos=2,xpd=TRUE)
 text(xpos,ypos[length(ypos)]+.5,paste0(seq(1960,2000,by=10),"s"))
 
-
+lbrks <- pretty(breaks)
+yat <- (1:length(lbrks)) / 2 + 2
+xat <- 7
+rect(xat,yat[-length(yat)],xat + .4,yat[-1],col=ramp(length(lbrks)-1))
+text(xat+.4,yat,paste0(lbrks,c("","","","","+")),pos=4)
+text(xat+.2,max(yat)+.3,"Years e(0)")
+dev.off()
 ##############################
 # Males
-par(mai = c(.1,.7,.4,.1), xaxs="i",yaxs="i", xpd=TRUE)
-plot(NULL, type = 'n', xlim = c(0,6.5),ylim = c(0,11), axes = FALSE, xlab = "",ylab = "",asp=1)
+pdf("Figures/StatesDecadesM.pdf",height=6,width=8)
+par(mai = c(.1,.6,.1,1.2), xaxs="i",yaxs="i", xpd=TRUE)
+plot(NULL, type = 'n', xlim = c(0,6.5),ylim = range(ypos)+c(-1,1), axes = FALSE, xlab = "",ylab = "",asp=1)
 
-for (i in 1:10){
+for (i in 1:5){
 	#rect(xpos[1]-.52,i-.52,xpos[1]+.52,i+.25,col=gray(.95),border=NA)
-	StateHeat(getcontr(M1960s,i),x=xpos[1],y=i,breaks=breaks, labels = FALSE, border = NA)
-	StateHeat(getcontr(M1970s,i),x=xpos[2],y=i,breaks=breaks, labels = FALSE, border = NA)
-	StateHeat(getcontr(M1980s,i),x=xpos[3],y=i,breaks=breaks, labels = FALSE, border = NA)
-	StateHeat(getcontr(M1990s,i),x=xpos[4],y=i,breaks=breaks, labels = FALSE, border = NA)
-	StateHeat(getcontr(M2000s,i),x=xpos[5],y=i,breaks=breaks, labels = FALSE, border = NA)
+	StateHeat(getcontr(M1960s,i),x=xpos[1],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
+	StateHeat(getcontr(M1970s,i),x=xpos[2],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
+	StateHeat(getcontr(M1980s,i),x=xpos[3],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
+	StateHeat(getcontr(M1990s,i),x=xpos[4],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
+	StateHeat(getcontr(M2000s,i),x=xpos[5],y=i,breaks=breaks, ramp=ramp, labels = FALSE, border = NA)
 }
-text(.2,ypos-.4,Causesm,pos=2,xpd=TRUE)
+causelabm <- gsub(pattern="_",replacement = " ",Causesm)
+text(.2,ypos-.4,causelabf,pos=2,xpd=TRUE)
 text(xpos,ypos[length(ypos)]+.5,paste0(seq(1960,2000,by=10),"s"))
 
+lbrks <- pretty(breaks)
+yat <- (1:length(lbrks)) / 2 + 2
+xat <- 7
+rect(xat,yat[-length(yat)],xat + .4,yat[-1],col=ramp(length(lbrks)-1))
+text(xat+.4,yat,paste0(lbrks,c("","","","","+")),pos=4)
+text(xat+.2,max(yat)+.3,"Years e(0)")
+dev.off()
