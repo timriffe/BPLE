@@ -6,18 +6,12 @@ if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm", "tim-ThinkPad-L440")){
 	setwd(paste0("/data/commons/",system("whoami",intern=TRUE),"/git/BPLE/BPLE"))
 }
 getwd()
+library(data.table)
+source("/home/tim/git/BPLE/BPLE/R/LTuniform.R")
 
 LTC <- local(get(load("Data/LTC1.Rdata")))
 
-gete0 <- function(CHUNK){
-	mx <- acast(CHUNK, Age~Year, value.var = "mxs")
-	data.frame(State = unique(CHUNK$State),
-			Year = sort(unique(CHUNK$Year)),
-			Sex = unique(CHUNK$Sex),
-			e0 = LTuniform(mx,sex=unique(CHUNK$Sex))$e0,
-			e0orig = CHUNK$ex[CHUNK$Age ==0],
-			stringsAsFactors = FALSE)
-}
+
 gete03 <- function(mx,Sex){
 	LTuniformvecminimal(mx,sex=unique(Sex))
 }
@@ -90,4 +84,13 @@ max(apply(e0ms,1,function(x){
 mean(bpm - apply(e0ms,2,max))
 mean(bpf - apply(e0fs,2,max))
 
+rownames(e0ms)[apply(e0ms,2,which.max)]
+# HA until MN took over in 2003
+rownames(e0fs)[apply(e0fs,2,which.max)]
+# MN until 53, ND for 5 yrs, then HI
+diff(range(bpm))/45;diff(c(use0m[1],use0m[46]))/46
+diff(range(bpf))/45;diff(c(use0f[1],use0f[46]))/46
+
+diff(c(use0m[1],use0m[46]))/46
+diff(c(use0f[1],use0f[46]))/46
 
