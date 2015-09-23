@@ -94,3 +94,8 @@ diff(range(bpf))/45;diff(c(use0f[1],use0f[46]))/46
 diff(c(use0m[1],use0m[46]))/46
 diff(c(use0f[1],use0f[46]))/46
 
+# average difference
+(mean(bpm) - mean(use0m)) / (diff(c(use0m[1],use0m[46]))/46)
+(mean(bpf) - mean(use0f)) / (diff(c(use0f[1],use0f[46]))/46)
+
+
