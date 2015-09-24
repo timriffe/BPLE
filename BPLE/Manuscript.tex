@@ -255,6 +255,17 @@ the vanguard for females in the year 1959, with a lif expectancy of 75.3, but
 that the best practices life expectancy in the same year was another 3 years
 higher at 78.3.
 
+There are limitations to the interpretation of a best practices trend, as
+defined here. The mix of causes within each age, and the resulting age pattern
+for each cause may not necessarily reflect a possible or likely mortality
+pattern. For instance, diseases may compensate each other, especially for
+diagnostic and reporting reasons. For instance, for decedents that suffered
+from both condition A and condition B, one state might be more likely to
+declare A as the underlying cause of death, while another state would more
+likely declare B to be as the underlying cause. A situation like this
+would tend to inflate the best practices $e(0)$. The best practices $e(0)$ may
+be underestimate in instances where reductions in cause A are expected to lead
+to reductions in cause B (e.g., pneumonia and cardiovascular disease.)
 \FloatBarrier
 \section*{Preliminary results}
 \FloatBarrier
@@ -328,32 +339,36 @@ increase even further, but we opine that cause-specific smoothing at the county
 level is more of a modelling gesture than sound practice, due to very low counts of deaths in
 most counties in the U.S. In the final paper we will aim to test the cause set
 proposed by \citet{vallin2008minimum} and compare it with other reasonable
-configurations for the U.S., and so recommend a rule of thumb grouping.
+configurations for the U.S., and so recommend a rule of thumb grouping. 
+
+For the sake of comparison with the presentlt calculated best practices series.
+The $e(0)$ value in 2004 for males and females was 80 and 84.9, respectively. In
+the same year, the observed all-cause $e(0)$ in Japan were 78.6 for males and
+85.5 for females. That is, the U.S. best practices trend is ahead of observed
+life expectancy for Japanese males, and behind for Japanese females. We may also
+compare with the official $e(0)$ projections of the U.S. Social Security
+Administration (SSA). The SSA projects projects male $e(0)$ passing 80 in the
+year 2058, and female $e(0)$
+passing 84.9 in the year 2075 \citep{SSA2005}. These projections are a full 54
+and 71 years after 2004, in both cases much farther in the future than a simple extrapolation
+of the best practices trend would predict, circa 2034.
 
 \FloatBarrier
 \subsection*{State differences by cause}
 
-We decompose the state departures in life expectancy from the best practice
-trend in each year and sex, over both age and cause. Part of the attraction of decomposing with respect to the best practices life expectancy is that contributions are always
-of the same sign, which makes interpretation of the heatmaps more intuitive.
-Deeper shades of red indicate larger departures, i.e., larger $e(0)$
-shortcomings.
-In Figure~\ref{fig:dep} we represent the average $e(0)$ shortcoming from each
-cause and state, and average within decades to summarize the total contribution
-to the departure from best practices.\footnote{The 2000s trend is based on the average for the years 2000-2004 only.} Major causes of death are in
-rows, and decades are organized in columns.
-
-In these heat maps, states are represented as identically-sized square cells,
-while preserving rough spatial relationships from a standard map
-projection.\footnote{This configuration is inspired by a tile grid map on the
+Since the trend in the best practices $e(0)$ is so stable over time, it
+is also a convenient moving benchmark against which to compare state patterns
+--- a kind of potential mortality for each state. We
+decompose the state departures in life expectancy from the best practice trend in each year and sex, over both age and cause. Part of the attraction of decomposing with respect to the best practices life expectancy is that contributions are always of the same sign, which makes heatmaps more intuitive than would otherwise be the case.\footnote{Typically age and/or cause-specific contributions to a difference in $e(0)$ are represented in stacked bar charts, which in the present case would not be a practical way to distill information.} We therefore summarize state trends in a series of heatmaps representing the 50 states plus the District of Columbia. In these heat maps, states are represented as identically-sized square cells, while preserving rough spatial relationships from a standard map projection. For orientation, we present a state guide to the heatmaps in Figure~\ref{fig:heatguide}.\footnote{This configuration is inspired by a tile grid map on the
 NPR blog \citep{NPRsquares}, which
 itself was inspired by various commonly used maps in the New York Times,
 Washington Post, and others. DeBelius notes that grid panels are not meant for
 displaying population quantities, since each state has a different population
 size. Since lifetable quantities are purged of population size and
 structure, the visual instrument is adequate, and the equalization of state
-size and form adds legibility to our results.} For orientation, we present a
-state guide to the heatmaps in Figure~\ref{fig:heatguide}.
+size and form adds legibility to our results.} Deeper shades of red
+indicate larger departures, i.e., larger $e(0)$ shortcomings.
+
 \begin{figure}
 \centering
 \caption{A guide to tiled heatmaps of U.S. states.}
@@ -361,20 +376,29 @@ state guide to the heatmaps in Figure~\ref{fig:heatguide}.
 \includegraphics[scale=.3]{Figures/StatesDiagram.pdf}
 \end{figure}
 
-
-For the case of cardiovascular disease
-and other causes, grouping departures into the 2$+$ group blends out much
+In Figures~\ref{fig:depm} and \ref{fig:depf} we represent the average $e(0)$
+shortcoming from each cause and state, and average within decades to summarize the total contribution
+to the departure from best practices.\footnote{The 2000s results are based on
+the average for the years 2000-2004 only.} Major causes of death are in rows,
+and decades are organized in columns. For the case of cardiovascular disease and other causes, grouping departures into the 2$+$ group blends out much
 interstate variation, since some contributions range as high as 4
 years, but broad patterns are still visible.\footnote{This visual display may be
 significantly adapted when we add more causes to the decomposition. We will also do a similar small multiples
 display for grouped age patterns.}
 
+Glancing over the lung diseases and cancer rows of the maps, it is evident that
+the District of Columbia had high excess mortality for these causes over all
+five decades, peaking in the 1980s. Lung diseases display a clear mortality
+basin in the Southern states for males, although the absolute maginitude of these departures from ideal mortality has diminished over time. The same mortality basin occurs in
+cariovascular causes over all five decades, but is clearly visible in this
+display only since the 1990's, due to the 2$+$ grouping.
+
 Since the cause groupings available at the time of submission are not the final groupings, and
 because the causes included in the study contribute such varying magnitudes to
 state differences, trends are dominated by Cardivascular diseases and the large
 aggregate group of all other causes. The 11 original causes were grouped into
-five so as to make state patterns more visible. More commentary to come at a
-later date.
+five so as to make state patterns more visible. These results will be commented
+at greater length when the final results are prepared.
 
 \begin{figure}
 \centering
@@ -392,10 +416,24 @@ groups, 1959-2004.}
 \includegraphics[scale=0.7]{Figures/StatesDecadesF.pdf}
 \end{figure}
 
-\section*{}
-
-
 \FloatBarrier
+\section*{Discussion}
+In this paper, we have given an intuitive rationale for calculating a best
+practices trend in the United States. First, the best practices trend in life
+expectancy at birth can be interpreted as the mortality potential present in the
+United States at a given point in time. It is an indication of the mortality
+conditions that would come to be if local conditions, practices,
+technologies, and behaviors were perfectly diffused from those places with the
+best age and cause-specific performance in the year. While it is difficult to
+imagine that pressing a magic button to activate this perfect cocktail of
+mortality risk factors would actually bring about this minimum mortality
+instantaneously--- for instance, cumulative risk factors in population
+stocks that are distributed unevenly over space would stymie such a thought
+experiment--- we do observe catch-ups with past best practices values for many states, and for the
+U.S. national $e(0)$, on average after a period of 30 years. It remains to be
+seen how this lag scales to the number of causes ocnsidered and size and
+distribution of subpopulations. At this time, we are rather attracted to the
+idea of a period weathervane that points us to where period mortality is going.
 
 \bibliographystyle{plainnat}
 %\bibliographystyle{demography}

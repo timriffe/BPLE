@@ -172,3 +172,18 @@ rect(xat,yat[-length(yat)],xat + .4,yat[-1],col=ramp(length(lbrks)-1))
 text(xat+.4,yat,paste0(lbrks,c("","","","","+")),pos=4)
 text(xat+.2,max(yat)+.3,"Years e(0)")
 dev.off()
+
+
+colMeans(F1960s)
+colMeans(F1970s)
+colMeans(F1980s)
+colMeans(F1990s)
+colMeans(F2000s)
+
+hist(F1960s[,"Cancer"])
+hist(F2000s[,"Cancer"])
+
+
+
+
+

@@ -106,5 +106,5 @@ summary(lm(colMeans(e0fs)~yrs))$r.squared
 
 colMeans(e0fs)
 
-
-
+bpm
+bpf
