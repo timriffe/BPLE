@@ -213,7 +213,7 @@ to collect stochastic zeros, producing an excessively optimistic best practices
 life expectancy. We therefore smooth all death rates using
 the \texttt{MortalitySmooth} package \citep{GC2012} in \texttt{R}. The age-period
 matrix of death rates for each state and sex is smoothed over both margins
-using a penalized b-spline. Cause fractions are then recalculated, and
+using a p-spline. Cause fractions are then recalculated, and
 multiplied into the smoothed all-cause death rates. Finally, we calculate
 lifetables for each sex and state, as well as the best practices lifetable of
 each year using HMD methodology.
