@@ -78,8 +78,8 @@
 \author[3,4]{Magali Barbieri}
 \author[4]{Celeste Winant}
 \affil[1]{Max Planck Institute for Demographic Research}
-\affil[2]{universit{\'e} de Gen{\`e}ve}
-\affil[3]{Institut National d'{\'e}tudes D{\'e}mgraphiques}
+\affil[2]{Universit{\'e} de Gen{\`e}ve}
+\affil[3]{Institut national d'{\'e}tudes d{\'e}mographiques}
 \affil[4]{Department of Demography, University of California, Berkeley}
 
 %\author{[Authors]}
@@ -88,13 +88,13 @@
 
 \begin{abstract}
 We calculate a preliminary series of best-possible lifetables for the United
-States from 1959-2004, defined as the age-specific aggregate of the lowest
+States from 1959 to 2004, defined as the age-specific aggregate of the lowest
 observed age-cause specific death rates among the 50
 states and the District of Columbia for each year. This synthetic best practices lifetable shows a gradual
 increasing trend over the period, on average 1.9 and 2.2 years higher
 than the highest state life expectancy in each year for males and females,
 respectively. We argue that the US states best practices lifetable is a useful
-guage of mortality.
+gauge of future mortality trends.
 \ackn{The work reported in this manuscript was supported in part by the U.S.
 National Institute On Aging of the National Institutes of Health under award
 numbers R01-AG011552 and R01-AG040245. The content is solely the responsibility of the authors and does not necessarily represent the official views of the funding agencies.}
@@ -108,24 +108,24 @@ is also practical when projecting mortality. Mortality reductions in past
 decades have been steady in many populations, and at times linear, which tends
 to guide projections into predicting the same sort of progress far into the
 future. Most past attempts to place limits on such projections were shown to be
-overly conservative within a short period of years \citep{oeppen2002broken}.
+overly conservative within a short period \citep{oeppen2002broken}.
 However, many simple mortality projections will send life expectancy scenarios
-to very high levels that for a given population may seem unimaginable. In some
+to very high levels that for a given population may seem unrealistic. In some
 cases, one seeks an external population that has already achieved a life
 expectancy as high as that produced by a model, and this gives some assurance
 that the projection is possible. Japan assumes this role in many cases today. In
 2012 life expectancy for Japanese females was 86, while for US females it was 81
-\citep{HMD}. If a US projection turns out to reach 86 we at least know that this
-is indeed possible.
+\citep{HMD}. If a US projection turns out to reach 86 we at least know that
+there exists some set of conditions in the world today that imply that this is
+indeed possible.
 
 The desire for such external references explains part of the interest in the
 historical development of world record life expectancy \citep{oeppen2002broken}.
 The maximum life expectancy from a set of populations shows what other
 populations may one day achieve due to diffusion in practices, technology, and
-wellbeing \citep{vallin2010esperance}. The vanguard life expectancy is
-calculated based on mortality rates undifferentiated by cause of death, which
-may not provide an omnibus signal of what may eventually develop. While the force of
-mortality governs the lifetable, there is a substantive rationale to conceive of
+wellbeing \citep{vallin2010esperance}. The highest observed life expectancy in
+a given moment, which we term the ``vanguard'' life expectancy, is calculated
+based on mortality rates undifferentiated by cause of death. All cause mortality may not provide an omnibus signal of what may eventually develop. While the force of mortality governs the lifetable, there is a substantive rationale to conceive of
 this force as a composite of cause-specific forces of mortality.
 \citet{vallin2008minimum} separate trends in life expectancy by causes of death,
 explained in terms of an epidemiological transition that unfolds in progressive
@@ -142,8 +142,8 @@ disease at age 45 will not necessarily be found in the same population. As an
 alternative to vanguard life expectancy, one could create cause-specific
 low-mortality benchmarks, or more synthetically, combine the lowest mortality
 observed by age and cause into a hybrid minimum mortality schedule. This synthetic low mortality lifetable--- hybrid with respect to reference population over age and cause--- was already suggested by \citet{wunsch1975minimum} and \citet{vallin2008minimum}. These authors investigated trends at the national-level. We refer to such hybrid minimum
-lifetables as best practices lifetables. \textit{eikemo2014} use the term ``best
-practices'' in a similar sense of an ideal mix of condtions, but do so via
+lifetables as ``best practices'' lifetables. \textit{eikemo2014} use the term
+``best practices'' in a similar sense of an ideal mix of condtions, but do so via
 combining particular risk factors with their estimated mortality impacts to
 produce best case scenarios. The end effect is quite similar, to the extent that
 either estimation strategy shows what society could acheive given perfect
@@ -159,17 +159,21 @@ all cause and cause-specific mortality. When projecting mortality for a given co
 check'' for mortality forecasts.
 For this reason, we propose a minimum mortality trend for the United States
 calculated on the basis of its own territorial subdivisions, the 50 states plus
-the District of Columbia. This choice limits the sources of unaccounted for
-heterogeneity in international comparisons, and it also conveniently homogenizes
-data sources. To be clear, we do not necessarily propose using a trend in best
-practices mortality as a component of coherent mortality forecasts, and we do
+the District of Columbia. This choice limits the sources of unaccounted
+heterogeneity in international comparisons, and it also guarantees uniformity of
+data sources.
+To be clear, we do not necessarily propose using a trend in best practices mortality as a component of coherent mortality forecasts, and we do
 not undertake such an exercise. Instead, we view the U.S. best practices
 mortality as indicative of the potential already present in the U.S., a special
 kind of ``nowcast''.
 
 \section*{Data and methods}
 All death count data come from the public NCHS mortality microdata files
-\citep{NCHSdata}. Population denominators come from a beta version of the U.S.
+\citep{NCHSdata}.\footnote{The current analysis is based on the public files
+with geographic information only up to 2004. We have bene granted access to
+geographic variables in a NCHS Research Data Center, and will extend analysis
+through 2013 for the final paper version.} Population denominators come from a
+beta version of the U.S.
 States project of the Human Mortality Database \citep{HMD}. Further processing of
 population counts into exposures is done according to the HMD Methods
 Protocol, and all-cause lifetables were calculated by single ages \citep{HMDMP}.
@@ -209,10 +213,11 @@ exercise of selecting the minimum death rate for a given age and cause will tend
 to collect stochastic zeros, producing an excessively optimistic best practices
 life expectancy. We therefore smooth all death rates using
 the \texttt{MortalitySmooth} package \citep{GC2012} in \texttt{R}. The age-period
-matrix of death rates for each state and sex is smoothed over both margins,
-fractions are then recalculated, a multiplied into the smoothed all-cause death
-rates. Finally, we calculate lifetables for both states and best practices
-lifetables using HMD methodology.
+matrix of death rates for each state and sex is smoothed over both margins
+using a penalized b-spline. Cause fractions are then recalculated, and
+multiplied into the smoothed all-cause death rates. Finally, we calculate
+lifetables for each sex and state, as well as the best practices lifetable of
+each year using HMD methodology.
 
 We decompose differences in state life expectancy from the best-practices life
 expectancy using the pseudo-continuous method proposed by
@@ -226,40 +231,62 @@ the final version we may opt to further separate trends from initial
 differences using the decomposition method recently proposed by
 \citet{DimaDecomp2014}.}
 
+\subsection{Vanguard and best practices life expectancy}
+For the sake of clarity, we define vanguard life expectancy as the highest
+observed state life expectancy for each sex in a given year. Elsewhere, this
+quantity is called the record life expectancy \citep{oeppen2002broken}, or even
+the best practices life expectancy \citep{sanderson2004putting}, but we apply
+the term best practices in a different sense. To define the best practices
+mortality schedule, select the lowest (smoothed) death rate by age, $x$,
+and cause, $c$, from among all the states, $s$, $m(s,x,c)$, and sum over
+all causes, $C$, within ages to define the minimum mortality schedule,
+$m(x)^{min}$
+\begin{equation}
+m(x)^{min} = \sum _{c=1}^C min(m(s,x,c))
+\end{equation}
+
+The minimum mortality schedule is then used to calculate the best-practices life
+expectancy, and its cause-specific mortality pattern is used as the
+benchmark against which to decompose the mortality pattern of each state. While
+the best practices life expectancy is drawn from the diverse mortality
+experience of the entire USA, the vanguard life expectancy refers only to a
+particular state in a given year. We can say, for instance, that Minnesota was
+the vanguard for females in the year 1959, with a lif expectancy of 75.3, but
+that the best practices life expectancy in the same year was another 3 years
+higher at 78.3.
+
 \FloatBarrier
 \section*{Preliminary results}
 \FloatBarrier
 
-All results at this time are preliminary, but we can report broad trends at this
-time.\footnote{The final results will differ in the following ways. At this time we have
-calculated results using 11 causes of death that were previously used in a different research project, and this will
-change to 30 causes to be consistent and comparable with \citet{vallin2008minimum}. Including
+All results at this time are preliminary, but we can report broad trends.\footnote{The final results will differ in the following ways. At this time we have
+calculated results using 11 causes of death that were previously from a
+different research project, and this will change to 30 causes to be consistent and comparable with \citet{vallin2008minimum}. Including
 more causes will increase the best practices life expectancy level. We will also
 include estimates through 2012 or 2013. At this time, we were only able to
 produce results through 2004, because geographic information is suppressed in
-the microdata for later years. This information is available in secure Research
-Data Centers, where we will produce cause fractions and all-cause lifetables for
+the public microdata for later years. This information is available in secure
+Research Data Centers, where we will produce cause fractions and all-cause lifetables for
 the most recent decade.} 
 
 \subsection*{Life expectancy trends}
 Most states display irregular gradual increasing trends
 over the 45 years considered, except for males in the District of Columbia,
-which has been recovering strongly since the 1990s, due both to secular
+which have been recovering strongly since the 1990s, due both to secular
 improvements and compositional change. The US aggregate trend is bouncier
 because death counts were not smoothed, and its rank position among states
 varies due in part also to compositional changes between states. The vanguard
 state life expectancy for males is Hawaii until the two most recent years of
-observation (2003-2004), where Minnesota has taken the lead. For females, the
-Minnesota is vanguard until 1963, followed by North Dakota for five years, and
-then Hawaii for the rest of the series until 2004. The vanguard trend for
-females has the same overall shape as the cluster of individual state trends,
-but for males the time trend in vanguard, ergo Hawaiian, life expectancy was
+observation (2003-2004), where Minnesota has taken the lead. For females,
+Minnesota was vanguard until 1963, followed by North Dakota for five years, and
+then Hawaii for the rest of the period until 2004. The vanguard trend for
+females has the same overall shape as the cluster of individual state trends, but for males the time trend in vanguard, ergo Hawaiian, life expectancy was
 different from the bulk of states. 
 
 For both males and females, the best
 practices trend is on average 2 years higher than the vanguard trend, and its
-progress is steadier than either the vanguard or national trends, as well as
-most individual states. The best practices trend has increased each year for
+progress is steadier than either the vanguard, national, or average state
+trends, as well as most individual states. The best practices trend has increased each year for
 males and females, though faster for males. The average annual improvement for
 males has been 0.1790 years of $e(0)$ per annum, compared with 0.1785 for the
 male national average life expectancy. The respective rates of improvement for
@@ -271,8 +298,8 @@ support to conceiving of the best practices trend as indicative of where the
 U.S. is going in the coming decades.
 
 \begin{figure}[t!]
-\caption{Trends in US, vanguard, best practices, and state life expectancies
-($e(0)$), 1959-2004.}
+\caption{Trends in US, vanguard, best practices, and state life expectancies at
+birth ($e(0)$), 1959-2004.}
 \label{fig:e0}
 \centering
 \begin{subfigure}[b]{.48\textwidth}
@@ -308,12 +335,32 @@ configurations for the U.S., and so recommend a rule of thumb grouping.
 
 We decompose the state departures in life expectancy from the best practice
 trend in each year and sex, over both age and cause. Part of the attraction of decomposing with respect to the best practices life expectancy is that contributions are always
-of the same sign, which makes interpretation of the heatmap more intuitive.
-Deeper shades of red indicate larger departures. In Figure~\ref{fig:dep}
-we aggregate over age and average within decades to summarize the total
-contribution to the departure from best practices.\footnote{The 2000s trend is
-based on the average for the years 2000-2004 only.} Major causes of death are in
+of the same sign, which makes interpretation of the heatmaps more intuitive.
+Deeper shades of red indicate larger departures, i.e., larger $e(0)$
+shortcomings.
+In Figure~\ref{fig:dep} we represent the average $e(0)$ shortcoming from each
+cause and state, and average within decades to summarize the total contribution
+to the departure from best practices.\footnote{The 2000s trend is based on the average for the years 2000-2004 only.} Major causes of death are in
 rows, and decades are organized in columns.
+
+In these heat maps, states are represented as identically-sized square cells,
+while preserving rough spatial relationships from a standard map
+projection.\footnote{This configuration is inspired by a tile grid map on the
+NPR blog \citep{NPRsquares}, which
+itself was inspired by various commonly used maps in the New York Times,
+Washington Post, and others. DeBelius notes that grid panels are not meant for
+displaying population quantities, since each state has a different population
+size. Since lifetable quantities are purged of population size and
+structure, the visual instrument is adequate, and the equalization of state
+size and form adds legibility to our results.} For orientation, we present a
+state guide to the heatmaps in Figure~\ref{fig:heatguide}.
+\begin{figure}
+\centering
+\caption{A guide to tiled heatmaps of U.S. states.}
+\label{fig:heatguide}
+\includegraphics[scale=.3]{Figures/StatesDiagram.pdf}
+\end{figure}
+
 
 For the case of cardiovascular disease
 and other causes, grouping departures into the 2$+$ group blends out much
@@ -329,24 +376,20 @@ aggregate group of all other causes. The 11 original causes were grouped into
 five so as to make state patterns more visible. More commentary to come at a
 later date.
 
-\begin{figure}[t!]
-\caption{State departures from vanguard $e(0)$ by large cause groups,
-1959-2004.}
-\label{fig:dep}
+\begin{figure}
 \centering
-\begin{subfigure}[b]{\textwidth}
-\centering
-\caption{Males}
+\caption{U.S. males, state departures from best practices $e(0)$ by large cause
+groups, 1959-2004.}
 \label{fig:depm}
-\includegraphics[scale=0.5]{Figures/StatesDecadesM.pdf}
-\end{subfigure}
-\\
-\begin{subfigure}[b]{\textwidth}
+\includegraphics[scale=0.7]{Figures/StatesDecadesM.pdf}
+\end{figure}
+
+\begin{figure}
 \centering
-\caption{Females}
+\caption{U.S. feales, state departures from best practices $e(0)$ by large cause
+groups, 1959-2004.}
 \label{fig:depf}
-\includegraphics[scale=0.5]{Figures/StatesDecadesF.pdf}
-\end{subfigure}
+\includegraphics[scale=0.7]{Figures/StatesDecadesF.pdf}
 \end{figure}
 
 \section*{}

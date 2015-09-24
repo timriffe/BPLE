@@ -7,6 +7,7 @@ if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm", "tim-ThinkPad-L440")){
 }
 getwd()
 library(data.table)
+library(reshape2)
 source("/home/tim/git/BPLE/BPLE/R/LTuniform.R")
 
 LTC <- local(get(load("Data/LTC1.Rdata")))
@@ -97,5 +98,13 @@ diff(c(use0f[1],use0f[46]))/46
 # average difference
 (mean(bpm) - mean(use0m)) / (diff(c(use0m[1],use0m[46]))/46)
 (mean(bpf) - mean(use0f)) / (diff(c(use0f[1],use0f[46]))/46)
+
+bpf[1]-e0fs["MN","1959"]
+
+summary(lm(colMeans(e0ms)~yrs))$r.squared
+summary(lm(colMeans(e0fs)~yrs))$r.squared
+
+colMeans(e0fs)
+
 
 
