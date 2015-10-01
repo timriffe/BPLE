@@ -109,3 +109,10 @@ StateHeat <- function(contr, x=0,y=0,breaks = pretty(contr),
 
 #plot(NULL, xlim = c(-.5,.5),ylim=c(-.5,.5),xlab = "", ylab = "", type= "n", axes = FALSE,asp=1)
 #StateHeat(contr)
+
+
+
+
+
+
+
