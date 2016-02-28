@@ -36,7 +36,7 @@
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 % working on this need to concatenate file name based on sex and variable name
 %\newcommand\Cell[1]{{\raisebox{-0.05in}{\includegraphics[height=.2in,width=.2in]{Figures/ColorCodes/\expandafter#1}}}}  
-
+\defcitealias{HMD}{HMD}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % setting color to letters affects spacing. Here's a hack I found here:
 % http://tex.stackexchange.com/questions/212736/change-letter-colour-without-losing-letter-spacing
@@ -62,7 +62,7 @@
 \newcommand\tg[1]{\includegraphics[scale=.5]{Figures/triadtable/triad#1.pdf}}
 \newcommand\tgh[1]{\raisebox{-.25\height}{\includegraphics[scale=.3]{Figures/triadtable/triad#1.pdf}}}
 
-\defcitealias{HMD}{HMD}
+%\defcitealias{HMD}{HMD}
 
 % junk for longtable caption
 \AtBeginEnvironment{longtable}{\linespread{1}\selectfont}
@@ -90,7 +90,7 @@
 We calculate a preliminary series of best-possible lifetables for the United
 States from 1959 to 2004, defined on the basis of the age-specific aggregate of
 the lowest observed age-cause specific death rates among the 50
-states and the District of Columbia for each year. The resulting highest-possible life expectancy shows a gradual increasing trend over the period, on
+states and the District of Columbia. The resulting highest-possible life expectancy shows a gradual increasing trend over the period, on
 average 1.9 and 2.2 years higher than the highest state life expectancy in each year for males and females, respectively. We argue that the US states best practices lifetable is a useful
 gauge of future mortality trends and a good benchmark against which to compare
 state mortality patterns.
@@ -98,7 +98,6 @@ state mortality patterns.
 National Institute On Aging of the National Institutes of Health under award
 numbers R01-AG011552 and R01-AG040245. The content is solely the responsibility of the authors and does not necessarily represent the official views of the funding agencies.}
 \end{abstract}
-
 
 \section*{Introduction}
 
@@ -136,7 +135,7 @@ technological or well-being improvements varies between populations. Therefore,
 the lowest observed all-cause force of mortality is not necessarily composed of
 the lowest cause-specific forces of mortality, which means that the vanguard life
 expectancy may not reflect the best mortality possible given current conditions
-over a set of populations. For instance, the lowest rate of suicide and heart
+in a set of populations. For instance, the lowest rate of suicide and heart
 disease at age 45 will not necessarily be found in the same population. As an
 alternative to vanguard life expectancy, one could create cause-specific
 low-mortality benchmarks, or more synthetically, combine the lowest mortality
@@ -173,7 +172,7 @@ with geographic information only up to 2004. We have bene granted access to
 geographic variables in a NCHS Research Data Center, and will extend analysis
 through 2013 for the final paper version.} Population denominators come from a
 beta version of the U.S.
-States project of the Human Mortality Database \citep{HMD}. Further processing of
+States project of the \citet{HMD}. Further processing of
 population counts into exposures is done according to the HMD Methods
 Protocol, and all-cause lifetables were calculated by single ages \citep{HMDMP}.
 Death counts for causes were aggregated into quinquennial age groups by year and sex for eleven large groups that minimize disruptions between ICD transitions, and then
@@ -207,11 +206,11 @@ All other & 29.91 & 33.95 \\
 \end{table}
 
 One caveat of calculating a best practices lifetable is that stochastic zeros
-occur in particular ages and causes, especially among small populations. The
+occur in particular ages and causes, especially in small populations. The
 exercise of selecting the minimum death rate for a given age and cause will tend
 to collect stochastic zeros, producing an excessively optimistic best practices
 life expectancy. We therefore smooth all death rates using
-the \texttt{MortalitySmooth} package \citep{GC2012} in \texttt{R}. The age-period
+the method proposed by \citep{GC2012}. The age-period
 matrix of death rates for each state and sex is smoothed over both margins
 using a p-spline. Cause fractions are then recalculated, and
 multiplied into the smoothed all-cause death rates. Finally, we calculate
@@ -224,14 +223,15 @@ expectancy using the pseudo-continuous method proposed by
 defining life expectancy as a direct function of age-cause-specific rates,
 $M_{(x,c)}$, thereby eliminating some artifacts present in other methods.
 Results are summarized by ages, causes and states and can be interpreted
-directly as the the total lag in years of life expectancy due to excess
-mortality (anything greater than the minimum) in the given margin.\footnote{In
-the final version we may opt to further separate trends from initial
-differences using the decomposition method recently proposed by
-\citet{DimaDecomp2014}.}
+directly as the the total gap in years of life expectancy due to excess
+mortality (anything greater than the minimum) in the given margin.
+%\footnote{In
+%the final version we may opt to further separate trends from initial
+%differences using the decomposition method recently proposed by
+%\citet{DimaDecomp2014}.}
 
 \subsection*{Vanguard and best practices life expectancy}
-For the sake of clarity, we define vanguard life expectancy as the highest
+We define vanguard life expectancy as the highest
 observed state life expectancy for each sex in a given year. Elsewhere, this
 quantity is called the record life expectancy \citep{oeppen2002broken}, or even
 the best practices life expectancy \citep{sanderson2004putting}, but we apply
@@ -250,20 +250,20 @@ benchmark against which to decompose the mortality pattern of each state. While
 the best practices life expectancy is drawn from the diverse mortality
 experience of the entire USA, the vanguard life expectancy refers only to a
 particular state in a given year. We can say, for instance, that Minnesota was
-the vanguard for females in the year 1959, with a lif expectancy of 75.3, but
-that the best practices life expectancy in the same year was another 3 years
+the vanguard for females in the year 1959, with a life expectancy of 75.3, but
+that the best practices life expectancy in the same year was 3 years
 higher at 78.3.
 
 There are limitations to the interpretation of a best practices trend, as
 defined here. The mix of causes within each age, and the resulting age pattern
 for each cause may not necessarily reflect a possible or likely mortality
-pattern. For instance, diseases may compensate each other, especially for
+pattern. Diseases may compensate each other, especially for
 diagnostic and reporting reasons. For instance, for decedents that suffered
 from both condition A and condition B, one state might be more likely to
-declare A as the underlying cause of death, while another state would more
-likely declare B to be as the underlying cause. A situation like this
-would tend to inflate the best practices $e(0)$. The best practices $e(0)$ may
-be underestimate in instances where reductions in cause A are expected to lead
+declare A as the underlying cause of death, while another state would on
+average more likely declare B to be as the underlying cause. A situation like
+this would tend to inflate the best practices $e(0)$. The best practices $e(0)$ may
+be underestimated in instances where reductions in cause A are expected to lead
 to reductions in cause B (e.g., pneumonia and cardiovascular disease.)
 \FloatBarrier
 \section*{Preliminary results}
@@ -300,7 +300,7 @@ trends, as well as most individual states. The best practices trend has increase
 males and females, though faster for males. The average annual improvement for
 males has been 0.1790 years of $e(0)$ per annum, compared with 0.1785 for the
 male national average life expectancy. The respective rates of improvement for
-females have been 0.1470 and 0.1456. It is convenient and telling that the
+females have been 0.1470 and 0.1456. It is convenient and revealing that the
 respective medium term average rates of improvement between national and
 best practices life expectancy match so closely, despite the best practices
 trend having a much more stable trajectory. This artifact may provide some
@@ -332,13 +332,14 @@ and compare it with the means of each series, we can roughly conclude that the
 best practices trend in year $t$ is a decent estimate of the national life
 expectancy in 30 or so years. This time lag is valid for the present series,
 but will vary depending on the number of cause groups that enter into the
-selection of minimum mortality rates. Clearly, if the population units were
+selection of minimum mortality rates. If the population units were
 counties rather than states, the level of best practices life expectancy would
-increase even further, but we opine that cause-specific smoothing at the county
-level is more of a modelling gesture than sound practice, due to very low counts of deaths in
-most counties in the U.S. In the final paper we will aim to test the cause set
-proposed by \citet{vallin2008minimum} and compare it with other reasonable
-configurations for the U.S., and so recommend a suitable cause grouping. 
+increase even further, but this exercise would be more challenging, due to very
+low counts of deaths in most counties in the U.S. Increasing the number of
+causes of death would similarly increase estimates would increase in a like
+manner, as would subdividing the population in other categories, such as race
+or income. In the final paper we will aim to test the cause set proposed by
+\citet{vallin2008minimum} and compare it with other reasonable configurations for the U.S., and so recommend a suitable cause grouping.
 
 For the sake of comparison with the presently calculated best practices series.
 The $e(0)$ value in 2004 for males and females was 80 and 84.9, respectively. In
@@ -350,7 +351,16 @@ Administration (SSA). The SSA projects projects male $e(0)$ passing 80 in the
 year 2058, and female $e(0)$
 passing 84.9 in the year 2075 \citep{SSA2005}. These projections are a full 54
 and 71 years after 2004, in both cases much farther in the future than a simple extrapolation
-of the best practices trend would predict, circa 2034.
+of the best practices trend would predict, around 2034. If this seems unlikely,
+recall that the rate components necessary to acheive this improvement are
+already observed in the United States!
+
+Note that both male and female best practice trends increased unabated through
+the 1960s, where life expectancy tended to stagnate at the national and state
+levels (cit). Had we forecast mortality in the following decades based on data
+only through the 1960s history tells us we would underestimate future life
+expectancy. Even in the 1960s the best practices trend would have told
+us to aim forecasts higher.
 
 \FloatBarrier
 \subsection*{State differences by cause}
