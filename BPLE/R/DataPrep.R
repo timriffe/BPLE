@@ -13,29 +13,10 @@ library(reshape2)
 library(magrittr)
 library(data.table)
 library(MortalitySmooth)
+library(HMDHFDplus)
 
-LT 			<- local(get(load("Data/MilaStatesSingleAge.Rdata")))
-
-# clean mxc, reshape
-mxc 		<- local(get(load("Data/mxcod.Rdata")))
-mxc 		<- melt(mxc, varnames = c("State","Year","Sex","Age","Cause"), value.name = "Mxc")
-mxc$State 	<- as.character(mxc$State)
-mxc$Sex   	<- as.character(mxc$Sex)
-mxc$Age   	<- as.character(mxc$Age)
-mxc$Cause 	<- as.character(mxc$Cause)
-
-# fix age
-# I rather dislike this little operation,
-# but more legible with pipes
-mxc$Age %>% 
-		strsplit(split="-") %>% 
-		lapply("[[",1) %>% 
-		unlist %>% 
-		gsub(pattern="Over ", replacement = "") %>% 
-		as.integer -> mxc$Age
-mxc$Sex <- ifelse(mxc$Sex == "male","m","f")
-
-# convert mxc to proportions
+# functions used here:
+# convert mxc to proportions ( now imported as such, as fractions)
 makeprop <- function(Mxc){
 	prop <- Mxc 
 	if (sum(prop) > 0){
@@ -43,33 +24,24 @@ makeprop <- function(Mxc){
 	}
 	prop
 }
-mxc <- data.table(mxc)
-mxc[,prop := makeprop(Mxc), by = list(Year, State, Sex, Age)]
-
-###################################################
-# apply proportions to single age mx 
-LT <- LT[LT$Year <=2004, ]
-head(LT)
-sum(LT$Mx==0 & !is.na(LT$Mx))
-
-LT$Dxhat <- LT$Exposure * LT$mx
+# we smooth all-cause mortality 2d.
 # given a matrix od DX and EX, lets smooth rates!
 sm.mat <- function(DX, EX){
-	ages  		<- 0:110
-	years 		<- 1959:2004
+	ages  		<- as.integer(rownames(DX))
+	years 		<- as.integer(colnames(DX))
 	W     		<- EX
 	W[W > 0] 	<- 1
 	W[DX < 1 & W == 1] 	<- .1
 	fit   <- Mort2Dsmooth(
-			     x = ages, 
-				 y = years, 
-				 Z = DX,
-			     offset = log(EX), 
-				 W = W,
-				 control=list(MAX.IT=200))
+			x = ages, 
+			y = years, 
+			Z = DX,
+			offset = log(EX), 
+			W = W,
+			control=list(MAX.IT=200))
 	mxs <- exp(fit$logmortality)
 	mxs <- melt(mxs, varnames=c("Age","Year"), value.name = "mxs")
-    mxs
+	mxs
 }
 # the iterator function for data.table
 sm.chunk <- function(.SD){
@@ -81,49 +53,6 @@ sm.chunk <- function(.SD){
 	.SD$mxs <- mxs$mxs
 	.SD
 }
-# takes a while
-LT <- LT[,sm.chunk(.SD),by=list(State,Sex)]
-
-# now we have a smoothed mx, very nice.
-###############################################
-# next step: attach proportions:
-# 1) make age groups for LT
-
-LT$Age5                            <- LT$Age - LT$Age %% 5
-LT$Age5[LT$Age5 == 0 & LT$Age > 0] <- 1
-LT$Age5[LT$Age5 > 100]             <- 100 # because they'll all get same proportions...
-
-# now attach mxs to mxc, easier.
-
-# State, Year, Age, Sex...
-mxs <- as.data.frame(mxs)
-LT  <- as.data.frame(LT)
-
-# make an LT for each Cause...
-LTC <- do.call(rbind,lapply(unique(mxc$Cause),function(cause, LT){
-		LT$Cause <- cause
-		LT
-		}, LT=LT))
-
-# use the recvec method, easiest to remember...
-# add prop to LT
-
-values        <- mxc$prop
-names(values) <- with(mxc,paste(State, Year, Sex, Age, Cause))
-LTC$cprop     <- values[with(LTC, paste(State, Year, Sex, Age5, Cause))]
-
-# ok mxc is the product:
-LTC$mxc5 <- LTC$mxs * LTC$cprop
-
-# now it's best to smooth the cause props in nearly the same way: 2d
-# then reconstrain.
-any(LTC$mxc5[LTC$Sex == "f" & LTC$Cause == "Prostate"] > 0)
-LTC <- LTC[!(LTC$Sex == "f" & LTC$Cause == "Prostate"), ]
-any(LTC$mxc5[LTC$Sex == "m" & LTC$Cause == "Uterus"] > 0)
-LTC <- LTC[!(LTC$Sex == "m" & LTC$Cause == "Uterus"), ]
-LTC$Dxc5 <- LTC$mxc5 * LTC$Exposure
-
-.SD <- LTC[LTC$Sex == "f" & LTC$State == "AK" & LTC$Cause == "Cardio.", ]
 sm.chunk.cause <- function(.SD){
 	# using the Dx that came from the HMD smoothed
 	# mx, keeps upper ages under control a bit more.
@@ -137,14 +66,92 @@ sm.chunk.cause <- function(.SD){
 	}
 	.SD
 }
+######################################################
+# now processing.
+
+LT 			<- local(get(load("Data/MilaStatesSingleAge.Rdata")))
+# fractions sent from Magali Mar 2, 2016.
+# 1959-2013 (now go beyond Mila's lifetables by 3 years
+frac 		<- local(get(load("Data/cod.fractions.Rdata")))
+frac 		<- melt(frac, varnames = c("State","Year","Sex","Age","Cause"), value.name = "Fxc")
+frac$State 	<- as.character(frac$State)
+frac$Sex   	<- as.character(frac$Sex)
+frac$Age   	<- as.character(frac$Age)
+
+
+frac$Age <- age2int(frac$Age)
+frac$Sex <- ifelse(frac$Sex == "M","m","f")
+
+###################################################
+# apply fraction to single age mx 
+
+#range(LT$Year)
+#range(frac$Year)
+# now with causes through 2013,
+# we need to cut off at 2010
+frac <- frac[frac$Year <= 2010, ]
+
+# lots of zeros
+sum(LT$Mx==0 & !is.na(LT$Mx))
+
+# this is 'hat' due to old age smoothing
+LT$Dxhat <- LT$Exposure * LT$mx
+
+
+# takes a while, warnings for interpolation (exppsure = 0)
+LT <- suppressWarnings(LT[, sm.chunk(.SD), by = list(State, Sex)])
+
+# now we have a smoothed mx, very nice.
+###############################################
+# next step: attach proportions:
+# 1) make age groups for LT
+
+LT$Age5                            <- LT$Age - LT$Age %% 5
+LT$Age5[LT$Age5 == 0 & LT$Age > 0] <- 1
+LT$Age5[LT$Age5 > 100]             <- 100 # because they'll all get same proportions...
+
+frac <- as.data.frame(frac)
+LT   <- as.data.frame(LT)
+
+# make an LT for each Cause...
+LTC <- do.call(rbind,lapply(unique(frac$Cause),function(cause, LT){
+		LT$Cause <- cause
+		LT
+		}, LT=LT))
+# use the recvec method, easiest to remember...
+# add prop to LT
+
+values        <- frac$Fxc
+names(values) <- with(frac,paste(State, Year, Sex, Age, Cause))
+LTC$cprop     <- values[with(LTC, paste(State, Year, Sex, Age5, Cause))]
+
+# ok mxc is the product:
+LTC$mxc5 <- LTC$mxs * LTC$cprop
+
+# now it's best to smooth the cause props in nearly the same way: 2d
+# then reconstrain.
+LTC$Dxc5 <- LTC$mxc5 * LTC$Exposure
+tapply(LTC$Dxc5, list(LTC$Sex, LTC$Cause), sum)
+
+
+LTC <- LTC[!(LTC$Sex == "m" & LTC$Cause == 4), ]
+LTC <- LTC[!(LTC$Sex == "f" & LTC$Cause == 8), ]
+LTC <- LTC[!(LTC$Sex == "m" & LTC$Cause == 22), ]
+
+
+save(LTC, file = "Data/LTC1.Rdata")
+# Change name, so as to call up an error rather than choke memory
+##############################################
+LTC1 <- local(get(load("Data/LTC1.Rdata")))
+#print(object.size(LTC1),units="Mb")
 # takes a long time
-head(LTC)
-LTC <- LTC[,sm.chunk.cause(.SD),by=list(State,Sex,Cause)]
+LTC1 <- data.table(LTC1)
+LTC1 <- LTC1[, sm.chunk.cause(.SD), by = list(State,Sex,Cause)]
 
 
 # saver intermediary because this takes so long, just in case.
-save(LTC, file = "Data/LTC1.Rdata")
-
+save(LTC1, file = "Data/LTC1.Rdata")
+head(LTC1)
 # next step is to convert to props and multiply back into mxs.
 LTC[,prop2 := makeprop(mxcs), by = list(Year, State, Sex, Age)]
 LTC$mxcs2 <- LTC$prop2 * LTC$mxs

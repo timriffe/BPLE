@@ -71,7 +71,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\title{A best practices composite lifetable for the United States}
+\title{A low-mortality benchmark for the United States}
 
 \author[1]{Tim Riffe\thanks{triffe@demog.berkeley.edu}}
 \author[2,3]{Adrien Remund}
@@ -91,9 +91,11 @@ We calculate a preliminary series of best-possible lifetables for the United
 States from 1959 to 2004, defined on the basis of the age-specific aggregate of
 the lowest observed age-cause specific death rates among the 50
 states and the District of Columbia. The resulting highest-possible life expectancy shows a gradual increasing trend over the period, on
-average 1.9 and 2.2 years higher than the highest state life expectancy in each year for males and females, respectively. We argue that the US states best practices lifetable is a useful
-gauge of future mortality trends and a good benchmark against which to compare
-state mortality patterns.
+average 1.9 and 2.2 years higher than the highest state life expectancy in each
+year for males and females, respectively. We argue that the US states
+low-morality lifetable is a useful gauge of future mortality trends. We apply
+the low-mortality as a benchmark to compare state mortality
+patterns and quantify the potential for immediately acheivable improvement.
 \ackn{The work reported in this manuscript was supported in part by the U.S.
 National Institute On Aging of the National Institutes of Health under award
 numbers R01-AG011552 and R01-AG040245. The content is solely the responsibility of the authors and does not necessarily represent the official views of the funding agencies.}
@@ -130,12 +132,9 @@ explained in terms of an epidemiological transition that unfolds in progressive
 stages with respect to particular technologies and risk factors in recent
 history. 
 
-The level and timing of cause-specific responses to particular
-technological or well-being improvements varies between populations. Therefore,
-the lowest observed all-cause force of mortality is not necessarily composed of
-the lowest cause-specific forces of mortality, which means that the vanguard life
-expectancy may not reflect the best mortality possible given current conditions
-in a set of populations. For instance, the lowest rate of suicide and heart
+The lowest observed all-cause force of mortality is not
+necessarily composed of the lowest cause-specific forces of mortality. This
+means that the vanguard life expectancy may not reflect the best mortality possible given current conditions in a set of populations. For instance, the lowest rate of suicide and heart
 disease at age 45 will not necessarily be found in the same population. As an
 alternative to vanguard life expectancy, one could create cause-specific
 low-mortality benchmarks, or more synthetically, combine the lowest mortality
@@ -150,7 +149,8 @@ lifetable, we condition on mortality outcomes only, making the endeavor much
 simpler in practice.
 
 National populations are heterogeneous with respect to many factors, both
-observed and unobserved, that affect cause-specific mortality rates. This does
+observed and unobserved, that affect cause-specific mortality rates. The level and timing of cause-specific responses to particular
+technological or well-being improvements varies between populations. This does
 not make international mortality comparisons futile, but it may make perfect
 convergence unimaginable even in the very long run. This is the case for both
 all cause and cause-specific mortality. When projecting mortality for a given country, we wonder whether mortality from an external population, or set of populations, is the best ``sanity
@@ -166,44 +166,42 @@ mortality as indicative of the potential already present in the U.S., a special
 kind of ``nowcast''.
 
 \section*{Data and methods}
-All death count data come from the public NCHS mortality microdata files
-\citep{NCHSdata}.\footnote{The current analysis is based on the public files
-with geographic information only up to 2004. We have bene granted access to
-geographic variables in a NCHS Research Data Center, and will extend analysis
-through 2013 for the final paper version.} Population denominators come from a
-beta version of the U.S.
-States project of the \citet{HMD}. Further processing of
-population counts into exposures is done according to the HMD Methods
-Protocol, and all-cause lifetables were calculated by single ages \citep{HMDMP}.
-Death counts for causes were aggregated into quinquennial age groups by year and sex for eleven large groups that minimize disruptions between ICD transitions, and then
-converted to fractions. Fractions were then multiplied into the single-age
-all-cause death rates. The eleven causes of death considered in this abstract
+All death count data come from the restricted NCHS mortality microdata files
+\citep{NCHSdata}.\footnote{We will extend analysis
+through 2013 for the final paper version.} Single-age population denominators
+and complete state lifetables come from a beta version of the U.S.
+States project of the \citet{HMD}. Death counts by causes of death are first
+grouped into 30 large cause groups and then converted to fractions in abridged
+age groups, $[0,1)$, $[1,4)$, $[5,9)$, \ldots, $100+$ \citep{HMDMP}. Fractions
+in abridged age groups are then multiplied into single-age all-cause death
+rates to produce a first estimate of single-age cause-specific death rates.
+The 30 causes of death considered in this abstract
 version are displayed in Table~\ref{tab:desc}, with their relative percentages.
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
 % Wed Sep 23 17:46:55 2015
-\begin{table}[ht]
-\centering
-\caption{Eleven causes of death considered in the current study version,
-percentages.}
-\label{tab:desc}
-\begin{tabular}{rrr}
- & Females & Males \\ 
-  \hline
-All other & 29.91 & 33.95 \\ 
-  Breast & 3.73 & 0.03 \\ 
-  Cardiovascular & 38.49 & 38.10 \\ 
-  Cerebrovascular & 10.50 & 6.84 \\ 
-  Lung & 3.55 & 6.50 \\ 
-  Other Cerebrovascular & 0.33 & 0.28 \\ 
-  Other Malignant Neoplasms & 11.01 & 9.83 \\ 
-  Other smoking & 0.57 & 1.36 \\ 
-  Prostate &  & 2.25 \\ 
-  Stomach & 0.67 & 0.87 \\ 
-  Uterus & 1.25 &  \\ 
-   \hline
-\end{tabular}
-\end{table}
+%\begin{table}[ht]
+%\centering
+%\caption{Eleven causes of death considered in the current study version,
+%percentages.}
+%\label{tab:desc}
+%\begin{tabular}{rrr}
+% & Females & Males \\ 
+%  \hline
+%All other & 29.91 & 33.95 \\ 
+%  Breast & 3.73 & 0.03 \\ 
+%  Cardiovascular & 38.49 & 38.10 \\ 
+%  Cerebrovascular & 10.50 & 6.84 \\ 
+%  Lung & 3.55 & 6.50 \\ 
+%  Other Cerebrovascular & 0.33 & 0.28 \\ 
+%  Other Malignant Neoplasms & 11.01 & 9.83 \\ 
+%  Other smoking & 0.57 & 1.36 \\ 
+%  Prostate &  & 2.25 \\ 
+%  Stomach & 0.67 & 0.87 \\ 
+%  Uterus & 1.25 &  \\ 
+ %  \hline
+%\end{tabular}
+%\end{table}
 
 One caveat of calculating a best practices lifetable is that stochastic zeros
 occur in particular ages and causes, especially in small populations. The
