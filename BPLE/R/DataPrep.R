@@ -70,6 +70,7 @@ sm.chunk.cause <- function(.SD){
 # now processing.
 
 LT 			<- local(get(load("Data/MilaStatesSingleAge.Rdata")))
+
 # fractions sent from Magali Mar 2, 2016.
 # 1959-2013 (now go beyond Mila's lifetables by 3 years
 frac 		<- local(get(load("Data/cod.fractions.Rdata")))
@@ -90,6 +91,17 @@ frac$Sex <- ifelse(frac$Sex == "M","m","f")
 # now with causes through 2013,
 # we need to cut off at 2010
 frac <- frac[frac$Year <= 2010, ]
+
+# this step added for memory management.
+# each state to be processed separately.
+# I don't like saving intermediate files,
+# but this requires > 8Gb memory otherwise
+states <- unique(frac$State)
+for (st in states){
+	ST <- frac[frac$State == st, ]
+	save(ST, file = paste0("Data/StateChunks/frac/",st,".Rdata"))
+}
+rm(frac);gc()
 
 # lots of zeros
 sum(LT$Mx==0 & !is.na(LT$Mx))
@@ -164,3 +176,5 @@ LTC$mxcs2 <- LTC$prop2 * LTC$mxs
 # so depending on whether the result is smooth or not, may be due for a second round of smoothing
 # within cause. Or maybe we accept this? Probably enough juice for now.
 save(LTC, file = "Data/LTC1.Rdata")
+
+
