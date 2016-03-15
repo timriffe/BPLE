@@ -210,5 +210,3 @@ LTC$mxcs2 <- LTC$prop2 * LTC$mxs
 # so depending on whether the result is smooth or not, may be due for a second round of smoothing
 # within cause. Or maybe we accept this? Probably enough juice for now.
 save(LTC, file = "Data/LTC1.Rdata")
-
-
