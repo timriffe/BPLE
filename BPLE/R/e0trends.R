@@ -53,7 +53,7 @@ lines(1959:2004, apply(e0ms,2,max), col = "blue", lwd = 2, lty = 2)
 lines(1959:2004, bpm, col = "red",lwd=2)
 lines(1959:2004, use0m, col = "red",lwd=2,lty=2)
 legend("bottomright",lty=c(1,2,2,1),col=c("#00000050","red","blue","red"),
-		lwd=c(1,2,2,2),legend=c("state e(0)","US e(0)","vanguard e(0)","BP e(0)"),
+		lwd=c(1,2,2,2),legend=c("state e(0)","US e(0)","vanguard e(0)","LMB e(0)"),
 		bty="n")
 dev.off()
 
@@ -65,7 +65,7 @@ lines(1959:2004, apply(e0fs,2,max), col = "blue", lwd = 2, lty = 2)
 lines(1959:2004, bpf, col = "red",lwd=2)
 lines(1959:2004, use0f, col = "red",lwd=2,lty=2)
 legend("bottomright",lty=c(1,2,2,1),col=c("#00000050","red","blue","red"),
-		lwd=c(1,2,2,2),legend=c("state e(0)","US e(0)","vanguard e(0)","BP e(0)"),
+		lwd=c(1,2,2,2),legend=c("state e(0)","US e(0)","vanguard e(0)","LMB e(0)"),
 		bty="n")
 dev.off()
 
