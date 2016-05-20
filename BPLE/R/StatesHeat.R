@@ -1,26 +1,5 @@
 # Author: tim states square heatmaps.
 ###############################################################################
-source("R/colourtools.R")
-
-#NYT <- read.csv("/home/tim/git/BPLE/BPLE/Data/NYTgridUS.csv")
-#
-#recvec <- 0:7
-#names(recvec) <- 7:0
-#NYT$y <- recvec[as.character(NYT$y)]
-
-#class(NYT) <-"gridUS"
-plot.gridUS <- function(X,...){
-	plot(NULL, type = "n", 
-			axes=FALSE,
-			xlab="",
-			ylab="",
-			asp=1,
-			xlim=range(X$x)+c(0,1),
-			ylim=range(X$y)+c(0,1))
-	rect(X$x,X$y,X$x+1,X$y+1,col=gray(.9),...)
-	text(X$x+.5,X$y+.5,X$key)
-}
-save(NYT,file="/home/tim/git/BPLE/BPLE/Data/NYTgridUS.Rdata")
 
 # custom, for artisanal panel plots
 centercoords <- function(x1,x2,y1,y2){
