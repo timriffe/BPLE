@@ -62,7 +62,45 @@ Causes <- 1:30
 #			do.call(rbind,out)
 #		}, mc.cores = 3, .probs = probs) # This nr of cores only on the big machine
 #Causeslog <- do.call(rbind, Causeslog)
+#setwd("/hdir/0/triffe/COMMONS/git/VarSC/VarSC")
+setwd("/home/tim/git/BPLE/BPLE")
+library(parallel)
+library(splines)
+library(quantreg)
 
+# quantiles
+probs <- c(.99,.9,.75,.5,.25,.1,.01)
+
+# first cause
+cs    <- 1
+
+# read in cause chunk
+path  <- paste0("Data/CauseChunks/Cause",cs,".Rdata")
+DAT   <- local(get(load(path)))
+
+sex   <- "m"
+
+DAT   <- DAT[!is.na(DAT$Mxc5raw) & !is.na(DAT$Exposure) & DAT$Exposure > 0,]
+
+# take quantiles over unlogged data
+system.time(
+mod1 <- rq(Mxc5raw ~ 
+				ns(Age,knots=c(.5,1,2,4,10,15,20,25,30,seq(35,105,by=10))) * 
+				ns(Year, knots = seq(1965,2005,by=10)), 
+		weights = sqrt(Exposure),
+		data = subset(DAT,Sex==sex),
+		tau = probs,
+		method = 'fn')
+)
+sessionInfo()
+newdat           <- expand.grid(Age = 0:110, Year = 1959:2010) 
+mypred           <- predict(mod1,newdat)
+colnames(mypred) <- .probs
+# put 0s back where needed; this is ok
+mypred[ mypred < 0 ] <- 0 
+out <-  cbind(Cause = cs, Sex = sex, newdat, mypred)
+
+rm(DAT);gc()
 #save(Causeslog, file = "/hdir/0/triffe/COMMONS/Dropbox/BPLE/Data/QRlog.Rdata")
 library(LexisUtils)
 library(reshape2)
