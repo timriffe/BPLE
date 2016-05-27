@@ -1,3 +1,70 @@
+
+
+###################################################################
+# TR: this code was run on 15 cores, May 27, 2016
+##############################################################33
+#library(parallel)
+#library(reshape2)
+#setwd("/hdir/0/triffe/COMMONS/git/VarSC/VarSC")
+#densquant <- function(mxc, nx, p=.5){
+#	mxc[is.na(mxc)] <- 0
+#	if (all(mxc==0)){
+#		return(0)
+#	}
+#	
+#	pdf <- density(mxc, 
+#			n = 1e4, 
+#			from = 0, 
+#			to = max(mxc, na.rm = TRUE), 
+#			weights = sqrt(nx)/sum(sqrt(nx)))
+#	max(pdf$x[cumsum(pdf$y)/sum(pdf$y) < p])
+#}
+#
+#
+#probs <- c(.99,.9,.75,.5,.25,.1,.01)
+#Causes <- 1:30
+##sex <- "m";cs=1
+#system.time(
+#		CausesDens <- mclapply(Causes, function(cs,.probs,.densquant){
+#					path <- paste0("Data/CauseChunks/Cause",cs,".Rdata")
+#					DAT  <- local(get(load(path)))
+#					
+#					sexes <- unique(DAT$Sex)
+#					
+#					DAT <- DAT[!is.na(DAT$Mxc5raw) & !is.na(DAT$Exposure),]
+#					out <- list()
+#					for (sex in sexes){
+#						# take quantiles over unlogged data
+#						
+#						MxMat <- acast(DAT[DAT$Sex == sex, ], Age~Year~State,value.var = "Mxc5raw", fill = 0)
+#						ExMat <- acast(DAT[DAT$Sex == sex, ], Age~Year~State,value.var = "Exposure", fill = 0)
+#						
+#						Mxcout <- MxMat[, ,1:length(.probs)] * 0
+#						dimnames(Mxcout)[[3]] <- .probs
+#						for (a in 1:nrow(Mxcout)){
+#							for (y in 1:ncol(Mxcout)){
+#								for (p in 1:length(.probs)){
+#									Mxcout[a,y,p] <- .densquant(MxMat[a,y,], ExMat[a,y,], .probs[p])
+#								}
+#							}
+#						}
+#						MxcoutL <- melt(Mxcout, varnames = c("Age","Year","Quant"), value.name = "Mxc")
+#						out[[sex]] <- cbind(Cause = cs, Sex = sex, MxcoutL)
+#					}
+#					rm(DAT);gc()
+#					do.call(rbind,out)
+#				}, mc.cores = 15, .probs = probs,.densquant=densquant) # This nr of cores only on the big machine
+#)
+#
+#CausesDens <- do.call(rbind, CausesDens)
+#rownames(CausesDens) <- NULL
+#save(CausesDens, file = "/hdir/0/triffe/COMMONS/Dropbox/BPLE/Data/CausesDensresults.Rdata")
+
+
+#############################
+# TR: original code from AR, based on comment from Jutta, is found below, also with modifications.
+#############################
+
 #############################
 # Use kernel density estimation in order to estimate quantiles of the underlying distribution of age- and cause-specific death rates across states
 # Adrien Remund, May 10, 2016, based on a suggestion by Jutta Gampe
@@ -177,4 +244,3 @@ abline(v = m, lwd = 2, col = 2, lty = 2)
 mtext(side = 3, at = m, text = "mode", col = 2)
 mtext(side = 1, at = c(q01, q50, q99), text = c("1%", "50%", "99%"), col = 4)
 legend("topright", legend = c("observed","estimated","quantiles"), lwd = c(NA,2,2), lty = c(NA,1,2), col = c(NA,1,4), fill = c(8,NA,NA), border = c("grey90",NA,NA))
-
