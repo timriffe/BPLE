@@ -108,16 +108,18 @@ library(reshape2)
 # Test results when they are in, should be available in DropBox.
 Test1 <- local(get(load("/home/tim/Dropbox/BPLE/Data/QRresults.Rdata")))
 
-mat <- acast(Test1[Test1$Cause == 1 & Test1$Sex == "m", ],Age~Year,value.var = "0.99")
-mat[mat==0] <- NA
-LexisMap(mat, zlim=c(1e-6,.1))
+#mat <- acast(Test1[Test1$Cause == 1 & Test1$Sex == "m", ],Age~Year,value.var = "0.99")
+#mat[mat==0] <- NA
+#LexisMap(mat, zlim=c(1e-6,.1))
 
 
 source("/home/tim/git/BPLE/BPLE/R/LTuniform.R")
 
 probsc <- colnames(Test1)[-c(1:4)]
 e0QR <- expand.grid(Year = 1959:2010,Sex=c("f","m"),Quant = probs, ex=NA)
-plot(NULL, type = "n", xlim=c(1959,2010),ylim=c(50,95))
+
+png("Figures/e0QauntReg.png")
+plot(NULL, type = "n", xlim=c(1959,2010),ylim=c(50,95), ylab = "e(0)", xlab = "Year")
 for (pr in 1:length(probsc)){
 	Mi <- acast(Test1[Test1$Sex == "m", ],Age~Year,sum,value.var = probsc[pr])
 	Fi <- acast(Test1[Test1$Sex == "f", ],Age~Year,sum,value.var = probsc[pr])
@@ -125,21 +127,22 @@ for (pr in 1:length(probsc)){
 	e0fi <- apply(Fi,2,LTuniformvecminimal,sex="f")
 	e0mi <- apply(Mi,2,LTuniformvecminimal,sex="m")
 	
-	e0QR$ex[with(e0QR,Sex == "m" & Quant == rev(probs)[pr])] <- e0mi
-	e0QR$ex[with(e0QR,Sex == "f" & Quant == rev(probs)[pr])] <- e0fi
+	e0QR$ex[with(e0QR,Sex == "m" & Quant == probs[pr])] <- e0mi
+	e0QR$ex[with(e0QR,Sex == "f" & Quant == probs[pr])] <- e0fi
 	
 	lines(1959:2010, e0mi, col = "blue")
 	lines(1959:2010, e0fi, col = "red")
 	
-	text(1958,e0mi["1959"],rev(probs)[pr],col="blue",xpd=TRUE)
-	text(2011,e0fi["2010"],rev(probs)[pr],col="red",xpd=TRUE)
+	text(1958,e0mi["1959"],probs[pr],col="blue",xpd=TRUE)
+	text(2011,e0fi["2010"],probs[pr],col="red",xpd=TRUE)
 }
-
+dev.off()
 
 
 Test2 <- local(get(load("/home/tim/Dropbox/BPLE/Data/CausesDensresults.Rdata")))
 
-plot(NULL, type = "n", xlim=c(1959,2010),ylim=c(50,95))
+png("Figures/e0Density.png")
+plot(NULL, type = "n", xlim=c(1959,2010),ylim=c(50,95), ylab = "e(0)", xlab = "Year")
 e0Density <- expand.grid(Year = 1959:2010,Sex=c("f","m"),Quant = probs, ex=NA)
 for (pr in probs){
 	Mi <- acast(Test2[Test2$Sex == "m" & Test2$Quant == pr, ],Age~Year,sum,value.var = "Mxc")
@@ -158,10 +161,39 @@ for (pr in probs){
 	text(1958,e0mi["1959"],pr,col="blue",xpd=TRUE)
 	text(2011,e0fi["2010"],pr,col="red",xpd=TRUE)
 }
+dev.off()
 
 
 
+Test3 <- local(get(load("/home/tim/Dropbox/BPLE/Data/QRresultsLog.Rdata")))
 
+#mat <- acast(Test1[Test1$Cause == 1 & Test1$Sex == "m", ],Age~Year,value.var = "0.99")
+#mat[mat==0] <- NA
+#LexisMap(mat, zlim=c(1e-6,.1))
+
+
+probsc <- colnames(Test3)[-c(1:4)]
+e0QRL <- expand.grid(Year = 1959:2010,Sex=c("f","m"),Quant = probs, ex=NA)
+
+png("Figures/e0QauntRegLog.png")
+plot(NULL, type = "n", xlim=c(1959,2010),ylim=c(50,95), ylab = "e(0)", xlab = "Year")
+for (pr in 1:length(probsc)){
+	Mi <- acast(Test3[Test3$Sex == "m", ],Age~Year,sum,value.var = probsc[pr])
+	Fi <- acast(Test3[Test3$Sex == "f", ],Age~Year,sum,value.var = probsc[pr])
+	
+	e0fi <- apply(Fi,2,LTuniformvecminimal,sex="f")
+	e0mi <- apply(Mi,2,LTuniformvecminimal,sex="m")
+	
+	e0QRL$ex[with(e0QRL,Sex == "m" & Quant == probs[pr])] <- e0mi
+	e0QRL$ex[with(e0QRL,Sex == "f" & Quant == probs[pr])] <- e0fi
+	
+	lines(1959:2010, e0mi, col = "blue")
+	lines(1959:2010, e0fi, col = "red")
+	
+	text(1958,e0mi["1959"],probs[pr],col="blue",xpd=TRUE)
+	text(2011,e0fi["2010"],probs[pr],col="red",xpd=TRUE)
+}
+dev.off()
 
 
 
