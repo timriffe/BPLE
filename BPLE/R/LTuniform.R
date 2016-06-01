@@ -54,10 +54,11 @@ LTuniformvecminimal <- compiler::cmpfun(function(mx,sex = "f"){
 	OPENAGE   <- i.openage - 1
 	RADIX     <- 1
 	ax        <- mx * 0 + .5
-	ax[1]   <- HMDLifeTables:::AKm02a0(m0 = mx[1], sex = sex)
+	ax[1]     <- HMDLifeTables:::AKm02a0(m0 = mx[1], sex = sex)
 	qx        <- mx / (1 + (1 - ax) * mx)
 	qx[i.openage]       <- ifelse(is.na(qx[i.openage]), NA, 1)
-	ax[i.openage]       <- 1 / mx[i.openage]                   
+	# change needed because mx[i.openage] can be close to zero
+	ax[i.openage]       <- min(1 / mx[i.openage]    ,2)               
 	px 				    <- 1 - qx
 	px[is.nan(px)]      <- 0
 	lx 			        <- c(RADIX, RADIX * cumprod(px[1:OPENAGE]))
@@ -68,7 +69,6 @@ LTuniformvecminimal <- compiler::cmpfun(function(mx,sex = "f"){
 	ex 				    <- Tx / lx
 	ex[1]
 })
-
 
 
 
