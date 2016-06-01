@@ -64,45 +64,45 @@
 #Causeslog <- do.call(rbind, Causeslog)
 #setwd("/hdir/0/triffe/COMMONS/git/VarSC/VarSC")
 setwd("/home/tim/git/BPLE/BPLE")
-library(parallel)
-library(splines)
-library(quantreg)
+#library(parallel)
+#library(splines)
+#library(quantreg)
 
 # quantiles
 probs <- c(.99,.9,.75,.5,.25,.1,.01)
 
 # first cause
-cs    <- 1
+#cs    <- 1
 
 # read in cause chunk
-path  <- paste0("Data/CauseChunks/Cause",cs,".Rdata")
-DAT   <- local(get(load(path)))
+#path  <- paste0("Data/CauseChunks/Cause",cs,".Rdata")
+#DAT   <- local(get(load(path)))
+#
+#sex   <- "m"
+#
+#DAT   <- DAT[!is.na(DAT$Mxc5raw) & !is.na(DAT$Exposure) & DAT$Exposure > 0,]
+#
+## take quantiles over unlogged data
+#system.time(
+#mod1 <- rq(Mxc5raw ~ 
+#				ns(Age,knots=c(.5,1,2,4,10,15,20,25,30,seq(35,105,by=10))) * 
+#				ns(Year, knots = seq(1965,2005,by=10)), 
+#		weights = sqrt(Exposure),
+#		data = subset(DAT,Sex==sex),
+#		tau = probs,
+#		method = 'fn')
+#)
+#sessionInfo()
+#newdat           <- expand.grid(Age = 0:110, Year = 1959:2010) 
+#mypred           <- predict(mod1,newdat)
+#colnames(mypred) <- .probs
+## put 0s back where needed; this is ok
+#mypred[ mypred < 0 ] <- 0 
+#out <-  cbind(Cause = cs, Sex = sex, newdat, mypred)
 
-sex   <- "m"
-
-DAT   <- DAT[!is.na(DAT$Mxc5raw) & !is.na(DAT$Exposure) & DAT$Exposure > 0,]
-
-# take quantiles over unlogged data
-system.time(
-mod1 <- rq(Mxc5raw ~ 
-				ns(Age,knots=c(.5,1,2,4,10,15,20,25,30,seq(35,105,by=10))) * 
-				ns(Year, knots = seq(1965,2005,by=10)), 
-		weights = sqrt(Exposure),
-		data = subset(DAT,Sex==sex),
-		tau = probs,
-		method = 'fn')
-)
-sessionInfo()
-newdat           <- expand.grid(Age = 0:110, Year = 1959:2010) 
-mypred           <- predict(mod1,newdat)
-colnames(mypred) <- .probs
-# put 0s back where needed; this is ok
-mypred[ mypred < 0 ] <- 0 
-out <-  cbind(Cause = cs, Sex = sex, newdat, mypred)
-
-rm(DAT);gc()
-#save(Causeslog, file = "/hdir/0/triffe/COMMONS/Dropbox/BPLE/Data/QRlog.Rdata")
-library(LexisUtils)
+#rm(DAT);gc()
+##save(Causeslog, file = "/hdir/0/triffe/COMMONS/Dropbox/BPLE/Data/QRlog.Rdata")
+#library(LexisUtils)
 library(reshape2)
 
 # Test results when they are in, should be available in DropBox.
@@ -138,13 +138,13 @@ for (pr in 1:length(probsc)){
 }
 dev.off()
 
-
+library(reshape2)
 Test2 <- local(get(load("/home/tim/Dropbox/BPLE/Data/CausesDensresults.Rdata")))
-
+head(Test2)
 png("Figures/e0Density.png")
 plot(NULL, type = "n", xlim=c(1959,2010),ylim=c(50,95), ylab = "e(0)", xlab = "Year")
 e0Density <- expand.grid(Year = 1959:2010,Sex=c("f","m"),Quant = probs, ex=NA)
-for (pr in probs){
+for (pr in probs){ # pr <- probs[7]
 	Mi <- acast(Test2[Test2$Sex == "m" & Test2$Quant == pr, ],Age~Year,sum,value.var = "Mxc")
 	Fi <- acast(Test2[Test2$Sex == "f" & Test2$Quant == pr, ],Age~Year,sum,value.var = "Mxc")
 	
@@ -163,7 +163,10 @@ for (pr in probs){
 }
 dev.off()
 
-
+e0LazyBastard <- function(mx){
+	lx <- c(1,exp(-cumsum(mx)),0)
+	sum(lx[-1]+lx[-length(lx)])/2
+}
 
 Test3 <- local(get(load("/home/tim/Dropbox/BPLE/Data/QRresultsLog.Rdata")))
 
@@ -176,14 +179,15 @@ probsc <- colnames(Test3)[-c(1:4)]
 e0QRL <- expand.grid(Year = 1959:2010,Sex=c("f","m"),Quant = probs, ex=NA)
 
 png("Figures/e0QauntRegLog.png")
-plot(NULL, type = "n", xlim=c(1959,2010),ylim=c(50,95), ylab = "e(0)", xlab = "Year")
+plot(NULL, type = "n", xlim=c(1959,2010),ylim=c(50,97), ylab = "e(0)", xlab = "Year")
 for (pr in 1:length(probsc)){
 	Mi <- acast(Test3[Test3$Sex == "m", ],Age~Year,sum,value.var = probsc[pr])
 	Fi <- acast(Test3[Test3$Sex == "f", ],Age~Year,sum,value.var = probsc[pr])
 	
 	e0fi <- apply(Fi,2,LTuniformvecminimal,sex="f")
 	e0mi <- apply(Mi,2,LTuniformvecminimal,sex="m")
-	
+	e0fi <- apply(Fi,2,e0LazyBastard) # hmmmm
+	e0mi <- apply(Mi,2,e0LazyBastard) # hmmmm
 	e0QRL$ex[with(e0QRL,Sex == "m" & Quant == probs[pr])] <- e0mi
 	e0QRL$ex[with(e0QRL,Sex == "f" & Quant == probs[pr])] <- e0fi
 	

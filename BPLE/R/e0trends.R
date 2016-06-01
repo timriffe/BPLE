@@ -10,15 +10,14 @@ library(data.table)
 library(reshape2)
 source("/home/tim/git/BPLE/BPLE/R/LTuniform.R")
 
-LTC <- local(get(load("Data/LTC1.Rdata")))
+LTC <- local(get(load("/home/tim/Dropbox/BPLE/Data/LTC1.Rdata")))
 
 
 gete03 <- function(mx,Sex){
 	LTuniformvecminimal(mx,sex=unique(Sex))
 }
 
-# for some reason couldn't do this with
-# normal data.table. tried too much, so I gave up
+
 States <- LTC[,sum(mxcs2),by=list(State,Year,Sex,Age)]
 setnames(States,"V1","mxs")
 
