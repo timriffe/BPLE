@@ -134,6 +134,9 @@ system.time(contrib2 <- mydecomp(
 #################################################################
 # this will take a long time, so best prepare for a server run. #
 #################################################################
+
+do.this <- FALSE
+if (do.this){
 library(parallel)
 
 # takes a long time!
@@ -175,7 +178,7 @@ for (yr in 1959:2004){
 save(Females, file = "Data/fcontrib.Rdata")
 save(Males, file = "Data/mcontrib.Rdata")
 
-
+}
 
 
 
