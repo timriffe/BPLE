@@ -13,6 +13,7 @@ source("/home/tim/git/BPLE/BPLE/R/LTuniform.R")
 LTC <- local(get(load("/home/tim/Dropbox/BPLE/Data/LTC1.Rdata")))
 
 
+
 gete03 <- function(mx,Sex){
 	LTuniformvecminimal(mx,sex=unique(Sex))
 }
